@@ -1,11 +1,12 @@
 MEMORY_STICK_LOCATION_UX0 = 0
 MEMORY_STICK_LOCATION_UR0 = 1
 MEMORY_STICK_LOCATION_IMC0 = 2
+MEMORY_STICK_LOCATION_UMA0 = 3
 
 local adrenaline_ms_root = "ux0:pspemu"
 
 function AdrenalineLoadConfig()
-	local fp = io.open("ux0:adrenaline/adrenaline.bin", "r+");
+	local fp = io.open("ux0:adrenaline/adrenaline.bin", "r+") or io.open("ux0:/app/PSPEMUCFW/adrenaline.bin", "r+");
 	if not fp then return nil end
 	local magic1 = str2int(fp:read(4));
 	fp:seek("set",20)
@@ -18,6 +19,8 @@ function AdrenalineLoadConfig()
 		adrenaline_ms_root = "ur0:pspemu"
 	elseif location == MEMORY_STICK_LOCATION_IMC0 then
 		adrenaline_ms_root = "imc0:pspemu"
+	elseif location == MEMORY_STICK_LOCATION_UMA0 then
+		adrenaline_ms_root = "uma0:pspemu"
 	end
 end
 
@@ -93,13 +96,13 @@ AdrenalineLoadConfig() -- Get root!
 initStates() -- Load states...
 
 local scroll = newScroll(MAX_STATES, 3) -- MAX_STATES total spaces and 3 view spaces.
-local back = image.load("back.png")
+local back = image.load("sce_sys/livearea/contents/bg0.png")
 while true do
 	buttons.read()
 	if buttons.up or buttons.analogly < -60 then scroll:up() elseif buttons.down or buttons.analogly > 60 then scroll:down() end
 	if buttons.cross and states[scroll.sel] then
-		local new_major = osk.init("Major Version","4",2,1) -- v4.X
-		local new_minor = osk.init("Minor Version","1",2,1) -- vX.1
+		local new_major = osk.init("Major Version", "6", 2, 1) -- v6.X
+		local new_minor = osk.init("Minor Version", "0", 2, 1) -- vX.0
 		if new_major and tonumber(new_major) and new_minor and tonumber(new_minor) then
 			new_major = tonumber(new_major)
 			new_minor = tonumber(new_minor)
@@ -123,31 +126,31 @@ while true do
 	end
 	if back then back:blit(0,0) end
 	
-	draw.fillrect(0,0,960,25,color.shadow)
-	screen.print(10,5,string.format("Adrenaline States %X.%02X",APP_VERSION_MAJOR, APP_VERSION_MINOR),1,color.white)
-	screen.print(950,5,string.format("%s - Batt: %s%%", os.date("%I:%M %p"), batt.lifepercent()),1,color.white,0x0,__ARIGHT) --FPS: %d - , screen.fps()
+	draw.fillrect(0, 0, 960, 25, color.shadow)
+	screen.print(10, 5, string.format("Adrenaline States %X.%02X", APP_VERSION_MAJOR, APP_VERSION_MINOR), 1, color.white)
+	screen.print(950, 5, string.format("%s - Batt: %s%%", os.date("%I:%M %p"), batt.lifepercent()), 1, color.white, 0x0, __ARIGHT) --FPS: %d - , screen.fps()
 	
 	local y = 35 + 5
 	for i=scroll.ini,scroll.lim do
-		if i == scroll.sel then draw.fillrect(0,y-5,960,136+10,color.shadow) end
+		if i == scroll.sel then draw.fillrect(0, y-5, 960, 136+10, color.shadow) end
 		if states[i] then
 			if states[i].img then
-				states[i].img:blit(10,y)
+				states[i].img:blit(10, y)
 			end
-			screen.print(260,y,states[i].title)
-			screen.print(260,y+20,states[i].mtime)
+			screen.print(260, y, states[i].title)
+			screen.print(260, y+20, states[i].mtime)
 			
 			screen.print(260, y+40,"V: "..states[i].version_str)
 		else
-			draw.fillrect(10,y,240,136, color.shine)
-			draw.rect(10,y,240,136, color.white)
-			screen.print(260,y,"Slot #"..(i-1).." Empty!")
+			draw.fillrect(10, y, 240, 136, color.shine)
+			draw.rect(10, y, 240, 136, color.white)
+			screen.print(260, y, "Slot #"..(i-1).." Empty!")
 		end
 		
 		y+= 158--136 + 10
 	end
 	
-	draw.fillrect(0,544-25,960,25,color.shadow)
-	screen.print(10,544-20,string.format("%s: Change Version state - %s: Delete state",SYMBOL_CROSS, SYMBOL_SQUARE),1,color.white)
+	draw.fillrect(0, 544-25, 960, 25, color.shadow)
+	screen.print(10, 544-20, string.format("%s: Change Version state - %s: Delete state", SYMBOL_CROSS, SYMBOL_SQUARE), 1, color.white)
 	screen.flip()
 end

@@ -24,12 +24,12 @@
 		<liveitem>
 			<text origin="background" line-align="center" margin-bottom="1">
 				<str size="25" bold="on" shadow="on">　</str>
-				<str size="40" bold="on" shadow="on">Adrenaline States - v1r0</str>
+				<str size="40" bold="on" shadow="on">Adrenaline States - v1r1</str>
 				<str size="25" bold="on" shadow="on">　
 				</str>
 				<str size="21" bold="on" shadow="on">
 					Easy Manager for States of Adrenaline.
-					®2017 Team ONElua - ONElua.x10.mx
+					®2018 Team ONElua - ONElua.x10.mx
 				</str>
 			</text>
 		</liveitem>

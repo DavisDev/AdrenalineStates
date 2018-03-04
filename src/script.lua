@@ -11,7 +11,7 @@
 
 color.loadpalette()
 
-dofile("version.lua")
-dofile("updater.lua")
+dofile("git/updater.lua")
+splash.new("splash.png")
 dofile("utils.lua")
 dofile("engine.lua")
