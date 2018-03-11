@@ -13,6 +13,10 @@ In a future, if the structure of the states changes, it will no longer be possib
 - Cross: Change state version.
 - Square: Delete state version.
 
+### Changelog 1.20 ###
+- Fix automatic network update (Add TLS v1.2 Support).
+- Updated to the latest version of ONElua.
+
 ### Changelog 1.10 ###
 - Added support to Adrenaline v6.
 - A little refactored the code.
